@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { HydratedDocument } from 'mongoose'
+import { Transform } from 'class-transformer';
+import { Document, ObjectId } from 'mongoose'
 
-export type UserDocument = HydratedDocument<User> 
+export type UserDocument = User & Document;
 
 @Schema({
     toJSON: {
@@ -11,6 +12,9 @@ export type UserDocument = HydratedDocument<User>
 })
 
 export class User {
+    @Transform(({ value }) => value.toString())
+    _id: ObjectId;
+
     @Prop({required: true})
     firstName: string;
 
