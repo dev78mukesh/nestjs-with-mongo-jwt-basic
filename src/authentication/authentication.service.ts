@@ -43,7 +43,7 @@ export class AuthenticationService {
         const token = this.jwtService.sign(payload);
         return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
           'JWT_EXPIRATION_TIME',
-        )}`;
+        ) || '7d'}`;
     }
 
     public async getAuthenticatedUser(email: string, plainTextPassword: string) {
@@ -59,6 +59,9 @@ export class AuthenticationService {
         }
       }
 
+      public getCookieForLogOut() {
+        return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+      }
 
       private async verifyPassword(
         plainTextPassword: string,
